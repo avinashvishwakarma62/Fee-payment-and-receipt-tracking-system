@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Student Dashboard | FeeTrack</title>
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<div class="app">
+
+<aside class="sidebar">
+
+<div class="side-brand">
+<span class="brand-icon">₹</span>
+<div>
+<strong>FeeTrack</strong>
+<small>Student Portal</small>
+</div>
+</div>
+
+<nav>
+
+<small>MENU</small>
+
+<button class="nav active" data-section="studentOverview">▦ <span>Overview</span></button>
+<button class="nav" data-section="studentPayments">◉ <span>Payments</span></button>
+<button class="nav" data-section="studentReceipts">▤ <span>Receipts</span></button>
+<button class="nav" data-section="studentProfile">♙ <span>My Profile</span></button>
+
+</nav>
+
+<div class="side-user">
+<div class="avatar" id="studentAvatar">S</div>
+<div>
+<strong id="studentSideName">Student</strong>
+<small>Student Account</small>
+</div>
+<button onclick="logout()">↪</button>
+</div>
+
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+
+<button class="menu" id="menuBtn">☰</button>
+
+<div>
+<h2 id="studentPageTitle">Overview</h2>
+<p>Track your fee information and payments.</p>
+</div>
+
+<div class="top-user">
+<div class="avatar" id="studentTopAvatar">S</div>
+</div>
+
+</header>
+
+<div class="content">
+
+<section class="page active" id="studentOverview">
+
+<div class="section-top">
+<div>
+<h1>Hello, <span id="studentNameTitle">Student</span> 👋</h1>
+<p>Here's your current fee summary.</p>
+</div>
+</div>
+
+<div class="stats">
+
+<div class="stat">
+<span>Total Fee</span>
+<strong id="studentTotalFee">₹0</strong>
+</div>
+
+<div class="stat">
+<span>Amount Paid</span>
+<strong id="studentPaid">₹0</strong>
+<small class="green">Successfully paid</small>
+</div>
+
+<div class="stat">
+<span>Amount Due</span>
+<strong id="studentDue">₹0</strong>
+<small class="orange">Pending amount</small>
+</div>
+
+<div class="stat">
+<span>Payments</span>
+<strong id="studentPaymentCount">0</strong>
+</div>
+
+</div>
+
+<div class="panel">
+
+<div class="panel-title">
+<div>
+<h3>Recent Payments</h3>
+<p>Your latest transactions</p>
+</div>
+</div>
+
+<div class="table-wrap">
+
+<table>
+<thead>
+<tr>
+<th>Receipt</th>
+<th>Amount</th>
+<th>Mode</th>
+<th>Date</th>
+<th>Status</th>
+</tr>
+</thead>
+
+<tbody id="studentRecentPayments"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section class="page" id="studentPayments">
+
+<div class="section-top">
+<div>
+<h1>Payment History</h1>
+<p>All your fee transactions.</p>
+</div>
+</div>
+
+<div class="panel">
+
+<div class="table-wrap">
+
+<table>
+<thead>
+<tr>
+<th>Payment ID</th>
+<th>Receipt</th>
+<th>Amount</th>
+<th>Mode</th>
+<th>Date</th>
+<th>Status</th>
+</tr>
+</thead>
+
+<tbody id="studentPaymentsTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section class="page" id="studentReceipts">
+
+<div class="section-top">
+<div>
+<h1>My Receipts</h1>
+<p>View your payment receipts.</p>
+</div>
+</div>
+
+<div class="panel">
+
+<div class="table-wrap">
+
+<table>
+<thead>
+<tr>
+<th>Receipt Number</th>
+<th>Payment ID</th>
+<th>Amount</th>
+<th>Date</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="studentReceiptsTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section class="page" id="studentProfile">
+
+<div class="section-top">
+<div>
+<h1>My Profile</h1>
+<p>Your registered information.</p>
+</div>
+</div>
+
+<div class="panel profile-card">
+
+<div class="profile-avatar" id="profileAvatar">S</div>
+
+<div>
+<h2 id="profileName">Student</h2>
+<p id="profileId">STU0000</p>
+</div>
+
+<div class="profile-grid">
+
+<div>
+<small>Course</small>
+<strong id="profileCourse">-</strong>
+</div>
+
+<div>
+<small>Semester</small>
+<strong id="profileSemester">-</strong>
+</div>
+
+<div>
+<small>Contact</small>
+<strong id="profileContact">-</strong>
+</div>
+
+<div>
+<small>Total Fee</small>
+<strong id="profileFee">₹0</strong>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+</main>
+</div>
+
+<div class="modal-bg" id="studentReceiptModal">
+
+<div class="modal receipt-modal">
+
+<div class="modal-head no-print">
+<h3>Payment Receipt</h3>
+<button onclick="closeModal('studentReceiptModal')">×</button>
+</div>
+
+<div id="studentReceiptContent"></div>
+
+<div class="modal-actions no-print">
+<button class="secondary" onclick="closeModal('studentReceiptModal')">Close</button>
+<button class="primary" onclick="printStudentReceipt()">Print Receipt</button>
+</div>
+
+</div>
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/student.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Admin Dashboard | FeeTrack</title>
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+
+  <div class="side-brand">
+    <span class="brand-icon">₹</span>
+    <div>
+      <strong>FeeTrack</strong>
+      <small>Management</small>
+    </div>
+  </div>
+
+  <nav>
+
+    <small>MAIN</small>
+
+    <button class="nav active" data-section="dashboard">▦ <span>Dashboard</span></button>
+    <button class="nav" data-section="students">♙ <span>Students</span></button>
+    <button class="nav" data-section="payments">◉ <span>Payments</span><b id="pendingBadge">0</b></button>
+    <button class="nav" data-section="receipts">▤ <span>Receipts</span></button>
+
+    <small>MANAGEMENT</small>
+
+    <button class="nav" data-section="fees">₹ <span>Fee Structure</span></button>
+    <button class="nav" data-section="reports">◫ <span>Reports</span></button>
+    <button class="nav" data-section="activity">◷ <span>Activity Logs</span></button>
+
+    <small>SYSTEM</small>
+
+    <button class="nav" data-section="notifications">♢ <span>Notifications</span></button>
+    <button class="nav" data-section="settings">⚙ <span>Settings</span></button>
+
+  </nav>
+
+  <div class="side-user">
+    <div class="avatar">A</div>
+    <div>
+      <strong>Administrator</strong>
+      <small>Super Admin</small>
+    </div>
+    <button id="logoutBtn">↪</button>
+  </div>
+
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+
+  <button class="menu" id="menuBtn">☰</button>
+
+  <div>
+    <h2 id="pageTitle">Dashboard</h2>
+    <p id="pageSubtitle">Welcome back! Here's what's happening today.</p>
+  </div>
+
+  <div class="top-actions">
+    <button class="notification-btn">♢</button>
+
+    <div class="top-user">
+      <div class="avatar">A</div>
+      <span>Administrator</span>
+    </div>
+  </div>
+
+</header>
+
+<div class="content">
+
+<!-- DASHBOARD -->
+
+<section class="page active" id="dashboard">
+
+<div class="section-top">
+  <div>
+    <h1>Overview</h1>
+    <p>Monitor your fee collection and student records.</p>
+  </div>
+  <button class="primary" onclick="openPaymentModal()">+ Record Payment</button>
+</div>
+
+<div class="stats">
+
+  <div class="stat">
+    <span>Total Students</span>
+    <strong id="totalStudents">0</strong>
+    <small>Registered students</small>
+  </div>
+
+  <div class="stat">
+    <span>Total Collection</span>
+    <strong id="totalCollection">₹0</strong>
+    <small class="green">Payment received</small>
+  </div>
+
+  <div class="stat">
+    <span>Pending Fees</span>
+    <strong id="totalPending">₹0</strong>
+    <small class="orange">Requires attention</small>
+  </div>
+
+  <div class="stat">
+    <span>Today's Payments</span>
+    <strong id="todayPayments">0</strong>
+    <small>Transactions today</small>
+  </div>
+
+</div>
+
+<div class="dashboard-grid">
+
+<div class="panel">
+
+<div class="panel-title">
+  <div>
+    <h3>Recent Payments</h3>
+    <p>Latest payment activity</p>
+  </div>
+  <button class="text-btn" onclick="navigateTo('payments')">View all →</button>
+</div>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Receipt</th>
+<th>Student</th>
+<th>Amount</th>
+<th>Mode</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody id="recentPayments"></tbody>
+</table>
+</div>
+
+</div>
+
+<div class="panel">
+
+<div class="panel-title">
+<div>
+<h3>Payment Status</h3>
+<p>Current overview</p>
+</div>
+</div>
+
+<div class="donut-box">
+<div class="donut">
+<div>
+<strong id="paidPercentage">0%</strong>
+<small>Paid</small>
+</div>
+</div>
+</div>
+
+<div class="legend">
+<span>● Paid <b id="paidCount">0</b></span>
+<span>● Pending <b id="pendingCount">0</b></span>
+</div>
+
+</div>
+
+</div>
+
+<div class="panel">
+
+<div class="panel-title">
+<div>
+<h3>Quick Actions</h3>
+<p>Frequently used tools</p>
+</div>
+</div>
+
+<div class="quick">
+
+<button onclick="navigateTo('students')">
+<span>♙</span>
+<strong>Manage Students</strong>
+<small>Add or update records</small>
+</button>
+
+<button onclick="openPaymentModal()">
+<span>₹</span>
+<strong>Record Payment</strong>
+<small>Add transaction</small>
+</button>
+
+<button onclick="navigateTo('receipts')">
+<span>▤</span>
+<strong>Find Receipt</strong>
+<small>Search receipts</small>
+</button>
+
+<button onclick="navigateTo('reports')">
+<span>◫</span>
+<strong>View Reports</strong>
+<small>Analyze data</small>
+</button>
+
+</div>
+</div>
+
+</section>
+
+
+<!-- STUDENTS -->
+
+<section class="page" id="students">
+
+<div class="section-top">
+<div>
+<h1>Students</h1>
+<p>Manage student records and fee information.</p>
+</div>
+<button class="primary" onclick="openStudentModal()">+ Add Student</button>
+</div>
+
+<div class="toolbar">
+
+<div class="search">
+⌕
+<input id="studentSearch" placeholder="Search by name, ID or course...">
+</div>
+
+<select id="courseFilter">
+<option value="">All Courses</option>
+<option>Computer Science</option>
+<option>Information Technology</option>
+<option>Mechanical Engineering</option>
+<option>Electrical Engineering</option>
+</select>
+
+<button class="secondary" onclick="resetStudentFilters()">Reset</button>
+
+</div>
+
+<div class="panel">
+<div class="table-wrap">
+
+<table>
+<thead>
+<tr>
+<th>Student</th>
+<th>ID</th>
+<th>Course</th>
+<th>Semester</th>
+<th>Total</th>
+<th>Paid</th>
+<th>Due</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="studentsTable"></tbody>
+</table>
+
+</div>
+</div>
+
+</section>
+
+
+<!-- PAYMENTS -->
+
+<section class="page" id="payments">
+
+<div class="section-top">
+<div>
+<h1>Payments</h1>
+<p>Track and verify payment transactions.</p>
+</div>
+<button class="primary" onclick="openPaymentModal()">+ Record Payment</button>
+</div>
+
+<div class="toolbar">
+
+<div class="search">
+⌕
+<input id="paymentSearch" placeholder="Search payment or student...">
+</div>
+
+<select id="paymentStatusFilter">
+<option value="">All Status</option>
+<option>Paid</option>
+<option>Pending</option>
+<option>Rejected</option>
+</select>
+
+<select id="paymentModeFilter">
+<option value="">All Modes</option>
+<option>Cash</option>
+<option>UPI</option>
+<option>Card</option>
+<option>Bank Transfer</option>
+</select>
+
+</div>
+
+<div class="panel">
+<div class="table-wrap">
+
+<table>
+<thead>
+<tr>
+<th>Payment ID</th>
+<th>Receipt</th>
+<th>Student</th>
+<th>Amount</th>
+<th>Mode</th>
+<th>Date</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="paymentsTable"></tbody>
+</table>
+
+</div>
+</div>
+
+</section>
+
+
+<!-- RECEIPTS -->
+
+<section class="page" id="receipts">
+
+<div class="section-top">
+<div>
+<h1>Receipts</h1>
+<p>Search, view and print payment receipts.</p>
+</div>
+</div>
+
+<div class="toolbar">
+<div class="search wide">
+⌕
+<input id="receiptSearch" placeholder="Search receipt, payment ID or student...">
+</div>
+</div>
+
+<div class="panel">
+<div class="table-wrap">
+
+<table>
+<thead>
+<tr>
+<th>Receipt Number</th>
+<th>Student</th>
+<th>Payment ID</th>
+<th>Amount</th>
+<th>Date</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="receiptsTable"></tbody>
+</table>
+
+</div>
+</div>
+
+</section>
+
+
+<!-- FEES -->
+
+<section class="page" id="fees">
+
+<div class="section-top">
+<div>
+<h1>Fee Structure</h1>
+<p>Configure fees and payment deadlines.</p>
+</div>
+<button class="primary" onclick="openFeeModal()">+ Add Fee</button>
+</div>
+
+<div class="fee-grid" id="feeGrid"></div>
+
+</section>
+
+
+<!-- REPORTS -->
+
+<section class="page" id="reports">
+
+<div class="section-top">
+<div>
+<h1>Reports</h1>
+<p>Analyze payment and collection records.</p>
+</div>
+<button class="secondary" onclick="window.print()">Print Report</button>
+</div>
+
+<div class="stats">
+
+<div class="stat">
+<span>Total Transactions</span>
+<strong id="reportTransactions">0</strong>
+</div>
+
+<div class="stat">
+<span>Total Collected</span>
+<strong id="reportCollected">₹0</strong>
+</div>
+
+<div class="stat">
+<span>Pending Amount</span>
+<strong id="reportPending">₹0</strong>
+</div>
+
+<div class="stat">
+<span>Collection Rate</span>
+<strong id="reportRate">0%</strong>
+</div>
+
+</div>
+
+<div class="dashboard-grid">
+
+<div class="panel">
+<div class="panel-title">
+<div>
+<h3>Collection by Payment Mode</h3>
+<p>Transaction distribution</p>
+</div>
+</div>
+<div class="report-list" id="modeReport"></div>
+</div>
+
+<div class="panel">
+<div class="panel-title">
+<div>
+<h3>Fee Status</h3>
+<p>Student payment status</p>
+</div>
+</div>
+<div class="report-list" id="feeStatusReport"></div>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ACTIVITY -->
+
+<section class="page" id="activity">
+
+<div class="section-top">
+<div>
+<h1>Activity Logs</h1>
+<p>Track recent system activity.</p>
+</div>
+<button class="secondary" onclick="clearActivityLogs()">Clear Logs</button>
+</div>
+
+<div class="panel">
+<div class="activity-list" id="activityList"></div>
+</div>
+
+</section>
+
+
+<!-- NOTIFICATIONS -->
+
+<section class="page" id="notifications">
+
+<div class="section-top">
+<div>
+<h1>Notifications</h1>
+<p>Payment and fee-related alerts.</p>
+</div>
+</div>
+
+<div class="panel">
+<div class="notification-list" id="notificationList"></div>
+</div>
+
+</section>
+
+
+<!-- SETTINGS -->
+
+<section class="page" id="settings">
+
+<div class="section-top">
+<div>
+<h1>Settings</h1>
+<p>Manage account and system preferences.</p>
+</div>
+</div>
+
+<div class="settings-grid">
+
+<div class="panel settings">
+
+<h3>Administrator Profile</h3>
+<p>Update administrator information.</p>
+
+<label>Name</label>
+<input id="adminName" value="Administrator">
+
+<label>Email</label>
+<input id="adminEmail" value="admin@feetrack.com">
+
+<button class="primary" onclick="saveSettings()">Save Changes</button>
+
+</div>
+
+<div class="panel settings">
+
+<h3>System Preferences</h3>
+<p>Control application behaviour.</p>
+
+<label class="switch">
+<span>
+<strong>Payment Notifications</strong>
+<small>Show payment alerts</small>
+</span>
+<input type="checkbox" checked id="paymentNotifications">
+</label>
+
+<label class="switch">
+<span>
+<strong>Activity Logging</strong>
+<small>Record administrative actions</small>
+</span>
+<input type="checkbox" checked id="activityLogging">
+</label>
+
+<label class="switch">
+<span>
+<strong>Auto Receipt Generation</strong>
+<small>Generate receipts automatically</small>
+</span>
+<input type="checkbox" checked id="autoReceipt">
+</label>
+
+</div>
+
+</div>
+
+</section>
+
+</div>
+</main>
+</div>
+
+
+<!-- STUDENT MODAL -->
+
+<div class="modal-bg" id="studentModal">
+
+<div class="modal">
+
+<div class="modal-head">
+<div>
+<h3 id="studentModalTitle">Add Student</h3>
+<p>Enter student information.</p>
+</div>
+<button onclick="closeModal('studentModal')">×</button>
+</div>
+
+<form id="studentForm">
+
+<input type="hidden" id="editStudentId">
+
+<div class="form-grid">
+
+<div>
+<label>Student ID</label>
+<input id="studentId" required>
+</div>
+
+<div>
+<label>Full Name</label>
+<input id="studentName" required>
+</div>
+
+<div>
+<label>Course</label>
+<select id="studentCourse" required>
+<option value="">Select course</option>
+<option>Computer Science</option>
+<option>Information Technology</option>
+<option>Mechanical Engineering</option>
+<option>Electrical Engineering</option>
+</select>
+</div>
+
+<div>
+<label>Semester</label>
+<select id="studentSemester" required>
+<option value="">Select semester</option>
+<option>1st</option>
+<option>2nd</option>
+<option>3rd</option>
+<option>4th</option>
+<option>5th</option>
+<option>6th</option>
+<option>7th</option>
+<option>8th</option>
+</select>
+</div>
+
+<div>
+<label>Contact Number</label>
+<input id="studentContact" required>
+</div>
+
+<div>
+<label>Total Fee</label>
+<input id="studentFee" type="number" min="0" required>
+</div>
+
+</div>
+
+<div class="modal-actions">
+<button type="button" class="secondary" onclick="closeModal('studentModal')">Cancel</button>
+<button class="primary">Save Student</button>
+</div>
+
+</form>
+</div>
+</div>
+
+
+<!-- PAYMENT MODAL -->
+
+<div class="modal-bg" id="paymentModal">
+
+<div class="modal">
+
+<div class="modal-head">
+<div>
+<h3>Record Payment</h3>
+<p>Add a new payment transaction.</p>
+</div>
+<button onclick="closeModal('paymentModal')">×</button>
+</div>
+
+<form id="paymentForm">
+
+<div class="form-grid">
+
+<div class="full">
+<label>Student</label>
+<select id="paymentStudent" required></select>
+</div>
+
+<div>
+<label>Amount</label>
+<input id="paymentAmount" type="number" min="1" required>
+</div>
+
+<div>
+<label>Payment Mode</label>
+<select id="paymentMode" required>
+<option value="">Select mode</option>
+<option>Cash</option>
+<option>UPI</option>
+<option>Card</option>
+<option>Bank Transfer</option>
+</select>
+</div>
+
+<div>
+<label>Date</label>
+<input id="paymentDate" type="date" required>
+</div>
+
+<div>
+<label>Status</label>
+<select id="paymentStatus">
+<option>Paid</option>
+<option>Pending</option>
+</select>
+</div>
+
+<div class="full">
+<label>Remarks</label>
+<textarea id="paymentRemarks"></textarea>
+</div>
+
+</div>
+
+<div class="modal-actions">
+<button type="button" class="secondary" onclick="closeModal('paymentModal')">Cancel</button>
+<button class="primary">Save Payment</button>
+</div>
+
+</form>
+</div>
+</div>
+
+
+<!-- FEE MODAL -->
+
+<div class="modal-bg" id="feeModal">
+
+<div class="modal small">
+
+<div class="modal-head">
+<div>
+<h3>Add Fee Type</h3>
+<p>Create a new fee category.</p>
+</div>
+<button onclick="closeModal('feeModal')">×</button>
+</div>
+
+<form id="feeForm">
+
+<label>Fee Name</label>
+<input id="feeName" required>
+
+<label>Amount</label>
+<input id="feeAmount" type="number" min="0" required>
+
+<label>Due Date</label>
+<input id="feeDueDate" type="date" required>
+
+<div class="modal-actions">
+<button type="button" class="secondary" onclick="closeModal('feeModal')">Cancel</button>
+<button class="primary">Add Fee</button>
+</div>
+
+</form>
+</div>
+</div>
+
+
+<!-- RECEIPT MODAL -->
+
+<div class="modal-bg" id="receiptModal">
+
+<div class="modal receipt-modal">
+
+<div class="modal-head no-print">
+<div>
+<h3>Payment Receipt</h3>
+<p>Official payment confirmation.</p>
+</div>
+<button onclick="closeModal('receiptModal')">×</button>
+</div>
+
+<div id="receiptContent"></div>
+
+<div class="modal-actions no-print">
+<button class="secondary" onclick="closeModal('receiptModal')">Close</button>
+<button class="primary" onclick="printReceipt()">Print Receipt</button>
+</div>
+
+</div>
+</div>
+
+<div id="toast"></div>
+
+<script src="js/storage.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/admin.js"></script>
+
+</body>
+</html>
