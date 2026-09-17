@@ -3,7 +3,9 @@ FeeTrack — Fee Payment & Receipt Tracking System
 📌 Overview
 FeeTrack is a professional web-based fee management system designed to simplify the process of managing student fee records, payments, receipts, and financial information.
 The system provides separate interfaces for administrators and students, allowing administrators to manage records and students to view their own payment information.
+
 ✨ Features
+
 👨‍💼 Administrator Panel
 - Admin authentication
 - Dashboard with fee statistics
@@ -26,7 +28,9 @@ The system provides separate interfaces for administrators and students, allowin
 - Activity logs
 - Notifications
 - System settings
+
 👨‍🎓 Student Panel
+
 - Student authentication
 - Personal dashboard
 - View total fee
@@ -36,7 +40,9 @@ The system provides separate interfaces for administrators and students, allowin
 - View generated receipts
 - Print receipts
 - View personal profile information
+
 🖥️ Interface
+
 The system includes:
 - Responsive dashboard
 - Professional admin interface
@@ -47,6 +53,7 @@ The system includes:
 - Digital receipt preview
 - Print-friendly receipts
 - Mobile-friendly layout
+
 🛠️ Technologies Used
 Frontend
 - HTML5
